@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="390" viewBox="0 0 1200 390" role="img" aria-labelledby="title">
+<title id="title">LuxiInfer App 操作演示：模型选择、一键下载、本地对话。</title>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b1728"/><stop offset="1" stop-color="#102c3a"/></linearGradient>
+  <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6ef0ce"/><stop offset="1" stop-color="#87baff"/></linearGradient>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#adcee0" stroke-opacity=".055"/></pattern>
+</defs>
+<g font-family="'Noto Sans CJK SC', 'Microsoft YaHei', 'PingFang SC', sans-serif">
+<rect x="1" y="1" width="1198" height="388" rx="22" fill="#f0f6fa" stroke="#d8e4ec" stroke-width="2"/>
+<circle cx="1060" cy="60" r="200" fill="#e2f2ed"/>
+<text x="48" y="56" font-size="13" font-weight="700" letter-spacing="2" fill="#3d8078">01 / APP WALKTHROUGH</text>
+<text x="48" y="126" font-size="40" font-weight="700" fill="#152e40">从模型下载，到本地对话。</text>
+<text x="50" y="170" font-size="20" fill="#577084">一个 App，连接小模型与 35B MoE。</text>
+<rect x="50" y="222" width="125" height="44" rx="12" fill="#fff" stroke="#d7e3eb"/>
+<text x="112" y="250" text-anchor="middle" font-size="17" fill="#244656">选择模型</text>
+<path d="M 188 244 H 210 M 204 238 L 210 244 L 204 250" fill="none" stroke="#6d8c9c" stroke-width="2"/>
+<rect x="224" y="222" width="125" height="44" rx="12" fill="#fff" stroke="#d7e3eb"/>
+<text x="286" y="250" text-anchor="middle" font-size="17" fill="#244656">一键下载</text>
+<path d="M 362 244 H 384 M 378 238 L 384 244 L 378 250" fill="none" stroke="#6d8c9c" stroke-width="2"/>
+<rect x="398" y="222" width="125" height="44" rx="12" fill="#dff2e9" stroke="#badbce"/>
+<text x="460" y="250" text-anchor="middle" font-size="17" fill="#25634f">本地对话</text>
+<text x="50" y="337" font-size="14" fill="#718b9b">LuxiInfer · Android 本地 AI 应用</text>
+<rect x="774" y="91" width="98" height="202" rx="20" fill="#d8e4ed" stroke="#b7cbd8"/>
+<rect x="971" y="91" width="98" height="202" rx="20" fill="#d3e9e3" stroke="#b2d4c8"/>
+<rect x="854" y="66" width="134" height="252" rx="26" fill="#fff" stroke="#adc6d3" stroke-width="2"/>
+<rect x="897" y="80" width="49" height="5" rx="2.5" fill="#c7d7e0"/>
+<path d="M 877 120 H 964 M 877 135 H 939 M 877 250 H 961 M 877 266 H 948" stroke="#e2eaf0" stroke-width="7" stroke-linecap="round"/>
+<circle cx="921" cy="189" r="44" fill="#173e44"/>
+<path d="M 910 170 L 938 189 L 910 208 Z" fill="#a0f0d6"/>
+<text x="921" y="359" text-anchor="middle" font-size="16" fill="#577684">App 操作演示</text>
+</g>
+</svg>
