@@ -1,16 +1,23 @@
-<p align="center">
-  <img src="assets/luxiinfer-banner.svg" width="100%" alt="LuxiInfer：模型一键下载，手机本地推理。" />
-</p>
+<h1 align="center">LuxiInfer</h1>
 
 <div align="center">
 
 **从 0.8B/2B 小模型高性能推理，到 35B MoE 大模型高效部署，以自研核心算子、超低比特量化和动态专家调度，突破移动端计算与存储瓶颈。**
 
-[🎬 实机演示](#demo) · [📥 下载 App](#download) · [🌟 核心能力](#features) · [⚡ 性能表现](#performance) · [🧩 技术方案](#technology) · [🛠️ 开发者](#developers)
+[🌟 核心能力](#features) · [🎬 实机演示](#demo) · [🚀 快速开始](#quick-start) · [📰 最新动态](#news) · [⚡ 性能表现](#performance) · [🧩 技术方案](#technology) · [🛠️ 开发者](#developers)
 
 </div>
 
-LuxiInfer 是陆兮科技面向高通移动平台的 **Android 本地 AI 应用**。在 App 内选择模型、**一键下载**并加载对话，即可在手机上运行 Qwen3.5-0.8B / 2B 和 Qwen3.6-35B-A3B，体验本地文本生成与图文问答。
+<a id="features"></a>
+
+## 🌟 核心能力
+
+LuxiInfer 是陆兮科技面向高通移动平台的 **Android 本地 AI 应用**，支持在手机上运行 Qwen 系列模型，进行文本与图文交互。
+
+- 🚀 **小模型高速推理。** Qwen3.5-0.8B / 2B 在手机上实现高吞吐输入处理与流畅文本生成。
+- 🧠 **35B MoE 手机推理。** Qwen3.6-35B-A3B 在手机本地运行，支持文本与图文任务。
+- 💾 **低内存部署。** 结合超低比特量化、专家按需加载与动态调度，降低模型运行时的内存占用。
+- ⚡ **高通 NPU 原生加速。** 基于 ExecuTorch 与 Qualcomm Hexagon NPU，自研 GDN 融合算子，加速小模型与 MoE 的混合注意力计算。
 
 <a id="demo"></a>
 
@@ -28,7 +35,7 @@ LuxiInfer 是陆兮科技面向高通移动平台的 **Android 本地 AI 应用*
     </td>
     <td width="50%" align="center">
       <!-- DEMO_MOE_URL：替换为 Qwen3.6-35B-A3B 实机视频地址。 -->
-      <a href="DEMO_MOE_URL"><img src="assets/demo-moe.svg" width="100%" alt="观看 Qwen3.6-35B-A3B MoE 实机演示" /></a>
+      <a href="DEMO_MOE_URL"><img src="assets/demo-moe-v1.2.svg" width="100%" alt="观看 Qwen3.6-35B-A3B MoE 实机演示" /></a>
       <br /><b>35B MoE：手机本地大模型推理</b>
       <p>查看 Qwen3.6 的材料问答、图片理解与持续生成。</p>
     </td>
@@ -41,91 +48,98 @@ LuxiInfer 是陆兮科技面向高通移动平台的 **Android 本地 AI 应用*
 </p>
 <p align="center"><b>App 完整体验：模型库 → 一键下载 → 加载模型 → 本地对话</b></p>
 
+<a id="quick-start"></a>
+
+## 🚀 快速开始（Quick Start）
+
+<a id="supported"></a>
+
+### 1. 设备与模型
+
+以下为已验证的模型与芯片平台组合：
+
+| 模型 | 参数规模 | 已验证芯片平台 | 支持能力 |
+| :--- | :--- | :--- | :--- |
+| Qwen3.5-0.8B / 2B | 0.8B / 2B | 高通 Snapdragon 8 elite<br>高通 Snapdragon 8 elite Gen 5 | 手机本地文本与图文推理 |
+| Qwen3.6-35B-A3B | 35B 总参数 / 约 3B 激活参数 | 高通 Snapdragon 8 elite Gen 5 | 手机本地文本与图文推理 |
+
 <a id="download"></a>
 
-## 📥 下载与使用
+### 2. 下载与安装
 
 <!-- APK_DOWNLOAD_URL：替换为 Android 安装包下载地址。 -->
-<p align="center"><a href="APK_DOWNLOAD_URL"><b>下载 LuxiInfer Android App</b></a></p>
+下载 [**LuxiInfer Android App**](APK_DOWNLOAD_URL)，在 Android 手机上安装并打开。
 
-1. **安装 LuxiInfer。** 在 Android 手机上安装并打开 App。
-2. **一键下载模型。** 进入模型库，选择所需模型并下载配套模型包。
-3. **加载并对话。** 模型就绪后输入文字或图片，查看本地流式回答。
+### 3. 加载模型，开始对话
 
-模型下载需要网络，推理在设备本地执行。小模型与 MoE 使用同一个 App，模型获取、加载和对话均在 App 内完成。
+1. **选择模型。** 进入 App 模型库，按任务需要选择模型。
+2. **一键下载并加载。** 下载配套模型包，完成后加载模型。
+3. **开始本地对话。** 输入文字或图片，体验文本问答、图片理解与流式生成。
 
-### 模型与平台
+模型下载需要网络；下载完成后，即可在离线状态下使用手机本地推理。
 
-| 模型 | 规模 | 已测芯片平台 |
-| :--- | :--- | :--- |
-| Qwen3.5-0.8B | 0.8B | SM8750（8 Elite）、SM8850（8 Elite Gen 5） |
-| Qwen3.5-2B | 2B | SM8750（8 Elite）、SM8850（8 Elite Gen 5） |
-| Qwen3.6-35B-A3B | 35B 总参数 / 约 3B 激活参数 | SM8975 |
+<a id="news"></a>
 
-<a id="features"></a>
+## 📰 最新动态
 
-## 🌟 核心能力
-
-- 📱 **模型一键获取。** 在同一个 App 内完成模型选择、下载与加载，快速开启手机本地对话。
-- ⚡ **高通 NPU 原生加速。** 基于 ExecuTorch 与 Qualcomm Hexagon NPU，以自研 GDN 算子加速 0.8B / 2B 小模型，并为 MoE 混合注意力计算提供基础。
-- 🧠 **35B MoE 手机推理。** 支持 Qwen3.6-35B-A3B 文本与图文任务，在手机上运行数百亿参数大模型。
-- 💾 **低内存部署。** 结合 2-bit 专家存储、按需加载与动态缓存，协同优化权重读取、内存占用和计算效率。
+- 📌 **小模型 GDN 加速：** Qwen3.5-0.8B / 2B 在高通 NPU 上实现高性能推理，Prefill 最高达到高通官方方案的 **2.17 倍**，Decode 最高达到 **2.35 倍**。[查看性能对比](#small-model-performance)
+- 📌 **35B MoE 手机部署：** Qwen3.6-35B-A3B 实现手机本地文本与图文推理。[查看实测结果](#moe-performance)
 
 <a id="performance"></a>
 
 ## ⚡ 性能表现
 
+<a id="small-model-performance"></a>
+
 ### 🚀 Qwen3.5-0.8B / 2B：4K 上下文推理加速
 
-**4K 上下文下，Prefill 速度最高达到高通官方方案的 2.17 倍（提升 116.70%），Decode 速度最高达到 2.35 倍（提升 135.20%）。** 两项最高值分别对应不同平台与模型。
+在 **4K 上下文**下，LuxiInfer 在 **高通 Snapdragon 8 elite Gen 5** 上实现：
 
-下图为 **4K 上下文**下的推理速度对比：**Prefill** 表示输入处理，**Decode** 表示连续生成，单位均为 token/s。紫色为 LuxiInfer，灰色为高通官方；柱顶标出速度，箭头上方标出两者的速度比。
+- **Qwen3.5-0.8B：** Prefill **1843.58 tokens/s**，Decode **90.33 tokens/s**。
+- **Qwen3.5-2B：** Prefill **1441.75 tokens/s**，Decode **50.95 tokens/s**。
 
-**SM8750 · Snapdragon 8 Elite · 4K 上下文**
+下图汇总 **Qwen3.5-0.8B / 2B** 在 **高通 Snapdragon 8 elite** 与 **高通 Snapdragon 8 elite Gen 5** 平台、**4K 上下文**下的推理速度：上方为 **Prefill（输入处理）**，下方为 **Decode（连续生成）**，单位均为 token/s，**数值越高，速度越快**。蓝色为 LuxiInfer，灰色为高通官方；每组标出实测速度与速度比。
 
-![SM8750 上 Qwen3.5-0.8B / 2B 在 4K 上下文下的 Prefill 与 Decode 速度对比](assets/gdn-performance-sm8750.png)
+![Qwen3.5-0.8B / 2B 在高通 Snapdragon 8 elite 与高通 Snapdragon 8 elite Gen 5 平台上的 4K 上下文 NPU 推理性能对比：Prefill 最高 2.17 倍，Decode 最高 2.35 倍](<assets/LuxiInfer_Qwen3.5_倍数与模型字号精简_4K.png>)
 
-**SM8850 · Snapdragon 8 Elite Gen 5 · 4K 上下文**
+对比高通官方方案，**Prefill 速度最高达到 2.17 倍（提升 116.70%）**，对应 **高通 Snapdragon 8 elite** 平台上 2B 模型的 **1285.22 tokens/s**；**Decode 速度最高达到 2.35 倍（提升 135.20%）**，对应 **高通 Snapdragon 8 elite Gen 5** 平台上的 0.8B 模型，该平台 2B 模型的 Decode 也达到 **2.09 倍**。上述结果体现 GDN 算子与整模执行路径的协同优化效果。
 
-![SM8850 上 Qwen3.5-0.8B / 2B 在 4K 上下文下的 Prefill 与 Decode 速度对比](assets/gdn-performance-sm8850.png)
+#### 📋 测试条件与高通官方数据来源
 
-在 SM8750 上，2B 模型的 Prefill 达到高通官方方案的 **2.17 倍**；在 SM8850 上，0.8B / 2B 模型的 Decode 分别达到 **2.35 倍 / 2.09 倍**。上述结果体现 GDN 算子与整模执行路径的协同优化效果。
+| 测试项目 | 陆兮科技 LuxiInfer | 高通官方 |
+| :--- | :--- | :--- |
+| 权重量化 | Q4 | Q4_0 GGUF |
+| 执行后端 | NPU | NPU |
+| 推理框架 | ExecuTorch | GenieX-llama.cpp |
+| 上下文 / 输入档位 | 4K 档位，实际输入约 4K | `context_length=4096` |
 
-<details>
-<summary>📋 测试条件与高通官方数据来源</summary>
-
-陆兮侧为 Q4 / NPU、约 4K 输入；高通官方数据采用 Q4_0 GGUF / GenieX-llama.cpp、4096 上下文的 NPU 条目。设备、量化细节与软件版本等条件存在差异，这些结果用于同档位参考对比。
+设备、量化细节与软件版本等条件存在差异，上述数据用于 4K 档位参考对比。
 
 **高通官方数据来源：** Qualcomm AI Hub，[Qwen3.5-0.8B 官方性能数据](https://github.com/qualcomm/ai-hub-models/blob/v0.65.0/src/qai_hub_models/models/qwen3_5_0_8b/perf.yaml)、[Qwen3.5-2B 官方性能数据](https://github.com/qualcomm/ai-hub-models/blob/v0.65.0/src/qai_hub_models/models/qwen3_5_2b/perf.yaml)。图中速度比按所展示数值计算并四舍五入，提升百分比沿用测试汇总记录。
 
-</details>
+<a id="moe-performance"></a>
 
 ### 🧠 Qwen3.6-35B-A3B：手机端 MoE 推理
 
-在**不使用前瞻专家调度与投机解码技术**的情况下，LuxiInfer 通过 NPU 原生计算、专家缓存和异步读算交叠，实现高性能的手机端 35B MoE 推理：
+在**不使用前瞻专家调度与投机解码技术**的情况下，LuxiInfer 实现高性能的手机端 35B MoE 推理：
 
-- 🚀 **Decode 最高 13.58 tokens/s。** 在图文 256 → 256 token、每层 64 槽缓存配置下，实现连续生成，为手机端大模型问答提供实时交互能力。
-- ⚡ **Prefill 吞吐突破 330 tokens/s。** 在纯文本 1024 → 1024 token 任务中，32 槽配置达到 **352.44 tokens/s**，64 槽配置达到 **332.09 tokens/s**，展现数百亿参数 MoE 的高性能输入处理能力。
-- 💾 **纯文本峰值内存低至 3.801 GiB。** 在 256 → 256 token、32 槽配置下，通过专家按需加载降低运行内存占用。
+- 🚀 **Decode 最高 17.262 tokens/s。** 支持手机本地连续生成，满足文本问答与图文交互需求。
+- ⚡ **Prefill 最高 516.661 tokens/s。** 输入处理吞吐突破 500 tokens/s，加快长输入任务的处理。
 
-**Prefill 已达到高通官方端侧 MoE 方案的相近吞吐量级。** 高通在[官方公告](https://www.qualcomm.cn/news/releases/2026/09/releases-2026-09-22-2)中披露，StepEdge-Omni 30B-MoE 通过 NPU+GPU 双引擎协同，预填充吞吐超过 **330 tokens/s**。LuxiInfer 的 Qwen3.6-35B-A3B 在 Hexagon NPU 推理路径上达到上述 **332.09–352.44 tokens/s**；两者为不同模型与执行配置下的吞吐量级对照。
+> 💾 **35B MoE，低内存部署：** Qwen3.6-35B-A3B 在一台配备 **12 GiB 运行内存**的 **高通 Snapdragon 8 elite Gen 5** 手机上本地运行，且峰值运行内存低至 **约 3.8 GiB**。
 
-#### 📊 详细测试结果
+**高通官方端侧 MoE 吞吐参考。** 高通在[官方公告](https://www.qualcomm.cn/news/releases/2026/09/releases-2026-09-22-2)中披露，StepEdge-Omni 30B-MoE 通过 NPU+GPU 双引擎协同，预填充吞吐超过 **330 tokens/s**。LuxiInfer 的 Qwen3.6-35B-A3B 在 Hexagon NPU 推理路径上达到 **516.661 tokens/s**；两者为不同模型与执行配置下的吞吐量级对照。
 
-最高 Decode、最高 Prefill 和最低内存分别对应上文标明的测试配置。以下覆盖纯文本与图文任务，使用 **AR128、W2 专家版本**。每项数据按 **32 槽 / 64 槽**排列；槽数表示每层可缓存的专家数量，输入与输出长度单位为 token。
+#### 📊 1024 → 1024 token 实测
 
-| 输入类型 | 输入 → 输出 | Prefill token/s（32 / 64 槽） | Decode token/s（32 / 64 槽） | 峰值内存 GiB（32 / 64 槽） |
-| :--- | :---: | ---: | ---: | ---: |
-| 纯文本 | 256 → 256 | 159.66 / 175.40 | 10.84 / 12.86 | 3.801 / 4.787 |
-| 纯文本 | 512 → 512 | 272.56 / 301.47 | 10.91 / 12.89 | 3.848 / 4.924 |
-| 纯文本 | 1024 → 1024 | 352.44 / 332.09 | 10.02 / 11.60 | 3.968 / 4.994 |
-| 图文 | 256 → 256 | 91.03 / 119.20 | 11.30 / 13.58 | 4.411 / 5.429 |
-| 图文 | 512 → 512 | 165.33 / 167.76 | 10.76 / 12.81 | 4.461 / 5.418 |
-| 图文 | 1024 → 1024 | 265.63 / 251.90 | 9.81 / 12.19 | 4.529 / 5.509 |
+**测试平台：高通 Snapdragon 8 elite Gen 5；总上下文：2048 token。** 以下展示同一配置下的纯文本与图文实测结果，输入与输出长度均为 1024 token。
 
-32 槽配置在上述纯文本任务下的峰值内存为 **3.801–3.968 GiB**；64 槽以更多缓存空间换取这些负载下更高的生成速度。Prefill 收益与输入和专家复用情况有关，可按设备资源与任务选择缓存容量。
+| 输入类型 | 输入 → 输出 token | Prefill（tokens/s） | Decode（tokens/s） |
+| :--- | :---: | ---: | ---: |
+| 纯文本 | 1024 → 1024 | 516.661 | 14.179 |
+| 图文 | 1024 → 1024 | 370.344 | 17.262 |
 
-W2 指专家权重的 2-bit 索引存储，其余组件采用混合精度。运行峰值内存与设备物理内存要求需分别考虑；图文任务的首次响应还包含图片处理和视觉编码开销。
+图文任务的首次响应还包含图片处理与视觉编码时间。
 
 <a id="technology"></a>
 
@@ -152,7 +166,7 @@ Gated DeltaNet（GDN）是混合注意力模型中的关键计算模块，通过
 LuxiInfer 将专家存储、缓存管理与 NPU 计算结合起来，保留每层 256 个专家的真实 Top8 路由，通过五项优化降低内存与 I/O 开销：
 
 1. **2-bit 专家量化。** 专家权重采用 `{-7, -2, 2, 7}` 四值码本，以 2-bit 索引压缩存储；执行时在 VTCM 中展开为 4-bit，配合 A8 激活，由 HVX 准备数据、HMX 执行矩阵乘。
-2. **按需加载与动态缓存。** 每层使用 32 / 64 槽 LRU 缓存，命中时直接复用，缺失时从闪存读取，让完整专家集合按需参与计算，降低常驻内存需求。
+2. **按需加载与动态缓存。** 每层使用 LRU 专家缓存，命中时直接复用，缺失时从闪存读取，让完整专家集合按需参与计算，降低常驻内存需求。
 3. **Prefill 权重复用。** 采用按层优先（layer-major）调度，同一层连续处理多个 AR128 输入块，并按专家归并 token，减少重复读取、提高矩阵计算利用率。
 4. **Decode 读算交叠。** 优先计算命中专家，同时异步读取缺失专家；结合就绪调度与双缓冲，交叠权重搬运和当前计算，减少等待。
 5. **跨阶段资源共享。** 融合 Attention 与 Router / Shared，Prefill / Decode 共享常量和常驻 context，并复用专家缓存，减少重复加载与复制。
@@ -163,8 +177,7 @@ LuxiInfer 将专家存储、缓存管理与 NPU 计算结合起来，保留每�
 
 LuxiInfer 基于 ExecuTorch 与高通 AI 技术栈构建，工程提供量化、导出、设备推理与 Android JNI 集成入口。GDN 核心源码不在开放范围内，工程构建需要配套组件。
 
-<details>
-<summary>查看 MoE 工程入口与部署流程</summary>
+### MoE 工程入口与部署流程
 
 以下路径相对于 ExecuTorch 源码根目录。完整环境与操作说明见 `examples/qualcomm/oss_scripts/moe/qwen35-35B-A3B/CONFIGURATION.md`。
 
@@ -192,24 +205,26 @@ export MOE_CONFIG="$MOE_ROOT/configs/export_sm8975.json"
 export MOE_DEVICE="YOUR_ADB_SERIAL"
 export MOE_OUT="$PWD/llama-output/luxiinfer-moe/pte"
 
-python "$MOE_ROOT/export.py" --config "$MOE_CONFIG" --print-plan
-python "$MOE_ROOT/export.py" --config "$MOE_CONFIG" --check
+python "$MOE_ROOT/export.py" --config "$MOE_CONFIG" --soc-model SM8850 --print-plan
+python "$MOE_ROOT/export.py" --config "$MOE_CONFIG" --soc-model SM8850 --check
 python "$MOE_ROOT/export.py" \
   --config "$MOE_CONFIG" --output "$MOE_OUT" \
-  --soc-model SM8975 --device "$MOE_DEVICE"
+  --soc-model SM8850 --device "$MOE_DEVICE"
 ```
+
+配置文件名 `export_sm8975.json` 沿用工程现有命名；上例通过 `--soc-model` 指定高通 Snapdragon 8 elite Gen 5，构建产物与设备运行库需匹配 Hexagon v81。
 
 配置驱动的入口串起 GPTQ、QNN 编译、共享权重分离与 PTE 打包。完整文本 PTE 导出需连接目标设备。最终模型交付文件为 `model.pte`，运行环境与平台库单独部署。
 
-以下示例约定导出配置的 `build_dir` 为 `llama-output/luxiinfer-moe/build`，设备 QNN 库位于 `/data/local/tmp/qwen35-runtime-v85`：
+以下示例约定导出配置的 `build_dir` 为 `llama-output/luxiinfer-moe/build`，设备 QNN 库位于 `/data/local/tmp/qwen35-runtime-v81`：
 
 ```bash
 python "$MOE_ROOT/run_chat.py" \
   --weights-path "$MOE_OUT/model.pte" \
   --build-dir "$PWD/llama-output/luxiinfer-moe/build" \
-  --device "$MOE_DEVICE" --soc-model SM8975 \
-  --runtime-device-dir /data/local/tmp/qwen35-runtime-v85 \
-  --cache-experts 32 --temperature 0 --max-new-tokens 128 \
+  --device "$MOE_DEVICE" --soc-model SM8850 \
+  --runtime-device-dir /data/local/tmp/qwen35-runtime-v81 \
+  --temperature 0 --max-new-tokens 128 \
   --no-enable-thinking --interactive --stream \
   --prompt "你好，请用中文介绍一下自己。"
 ```
@@ -217,8 +232,6 @@ python "$MOE_ROOT/run_chat.py" \
 图文推理使用 `--image-path`，Android 集成使用 `Qwen35MoeModule`。配置字段、工具链版本、JNI 打包与排错步骤分别见工程内的 `CONFIGURATION.md` 和 `extension/android/jni/moe/README.md`。
 
 复现上文 MoE 测试时，总上下文需配置为 2048，并导出匹配的模型图；工程默认值为 1152。上下文包含模板、文本、图片与输出，修改运行时参数不会扩大已有图的容量。
-
-</details>
 
 <a id="contact"></a>
 

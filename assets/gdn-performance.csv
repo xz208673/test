@@ -1,5 +1,0 @@
-platform,model,prefill_luxiinfer,prefill_reference,decode_luxiinfer,decode_reference
-SM8750,0.8B,1300.86,890,62.45,37.7
-SM8750,2B,1285.22,593,35.26,22.6
-SM8850,0.8B,1843.58,1120,90.33,38.4
-SM8850,2B,1441.75,702,50.95,24.4
