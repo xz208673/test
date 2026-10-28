@@ -104,7 +104,7 @@ LuxiInfer 是陆兮科技面向高通移动平台的 **Android 本地 AI 应用*
 
 对比高通官方方案，**Prefill 速度最高达到 2.17 倍（提升 116.70%）**，对应 **高通 Snapdragon 8 elite** 平台上 2B 模型的 **1285.22 tokens/s**；**Decode 速度最高达到 2.35 倍（提升 135.20%）**，对应 **高通 Snapdragon 8 elite Gen 5** 平台上的 0.8B 模型，该平台 2B 模型的 Decode 也达到 **2.09 倍**。上述结果体现 GDN 算子与整模执行路径的协同优化效果。
 
-**高通官方数据来源：** Qualcomm AI Hub，[Qwen3.5-0.8B 官方性能数据](https://github.com/qualcomm/ai-hub-models/blob/v0.65.0/src/qai_hub_models/models/qwen3_5_0_8b/perf.yaml)、[Qwen3.5-2B 官方性能数据](https://github.com/qualcomm/ai-hub-models/blob/v0.65.0/src/qai_hub_models/models/qwen3_5_2b/perf.yaml)。设备、量化细节与软件版本存在差异，结果用于同档位参考对比；图中速度比按所展示数值计算并四舍五入，提升百分比沿用测试汇总记录。
+***高通官方数据来源：** Qualcomm AI Hub，[Qwen3.5-0.8B 官方性能数据](https://github.com/qualcomm/ai-hub-models/blob/v0.65.0/src/qai_hub_models/models/qwen3_5_0_8b/perf.yaml)、[Qwen3.5-2B 官方性能数据](https://github.com/qualcomm/ai-hub-models/blob/v0.65.0/src/qai_hub_models/models/qwen3_5_2b/perf.yaml)。设备、量化细节与软件版本存在差异，结果用于同档位参考对比；图中速度比按所展示数值计算并四舍五入，提升百分比沿用测试汇总记录。*
 
 <a id="moe-performance"></a>
 
@@ -124,7 +124,7 @@ LuxiInfer 是陆兮科技面向高通移动平台的 **Android 本地 AI 应用*
 **测试平台：高通 Snapdragon 8 elite Gen 5；总上下文：2048 token。** 以下展示同一配置下的纯文本与图文实测结果，输入与输出长度均为 1024 token。
 
 | 输入类型 | 输入 → 输出 token | Prefill（tokens/s） | Decode（tokens/s） |
-| :--- | :---: | ---: | ---: |
+| :---: | :---: | :---: | :---: |
 | 纯文本 | 1024 → 1024 | 516.661 | 14.179 |
 | 图文 | 1024 → 1024 | 370.344 | 17.262 |
 
@@ -164,11 +164,11 @@ LuxiInfer 将专家存储、缓存管理与 NPU 计算结合起来，保留每�
 
 ## 🛠️ 开发者
 
-LuxiInfer 基于 ExecuTorch 与高通 AI 技术栈构建，配套 MoE 工程涵盖量化、模型导出、设备推理和 Android JNI 集成。**GDN 核心源码不在开放范围内**，构建和运行需要与目标平台匹配的配套组件。
+LuxiInfer 基于 ExecuTorch 与高通 AI 技术栈构建，配套 MoE 工程涵盖量化、模型导出及设备推理。**GDN 核心源码不在开放范围内**，构建和运行需要与目标平台匹配的配套组件。
 
 ### MoE 工程入口
 
-以下目录介绍配套工程的组织方式，路径相对于 ExecuTorch 源码根目录。**本仓库提供项目介绍和展示素材，不包含下列工程源码及构建依赖**；部署和集成交流可通过文末联系方式与我们联系。
+以下目录介绍配套工程的组织方式，路径相对于 ExecuTorch 源码根目录。部署和集成交流可通过文末联系方式与我们联系。
 
 ```text
 examples/qualcomm/oss_scripts/moe/qwen35-35B-A3B/
@@ -183,10 +183,9 @@ examples/qualcomm/oss_scripts/moe/qwen35-35B-A3B/
 ├── runner/                # 会话、专家缓存与异步 I/O
 └── native/                # Hexagon HVX / HMX 专家内核
 
-extension/android/jni/moe/ # Android JNI 集成
 ```
 
-工程目录沿用 `qwen35-35B-A3B` 命名，适配模型为 Qwen3.6-35B-A3B。配套工程中的 `CONFIGURATION.md` 介绍环境准备、基础库构建、导出与部署；Android JNI 的接口和集成要求见配套工程中的 `extension/android/jni/moe/README.md`。
+工程目录沿用 `qwen35-35B-A3B` 命名，适配模型为 Qwen3.6-35B-A3B。配套工程中的 `CONFIGURATION.md` 介绍环境准备、基础库构建、导出与部署。
 
 ### 配套工程的导出与推理
 
