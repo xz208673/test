@@ -4,7 +4,7 @@
 
 **从 0.8B/2B 小模型高性能推理，到 35B MoE 大模型高效部署，以自研核心算子、超低比特量化和动态专家调度，突破移动端计算与存储瓶颈。**
 
-[🌟 核心能力](#features) · [🎬 实机演示](#demo) · [🚀 快速开始](#quick-start) · [📰 最新动态](#news) · [⚡ 性能表现](#performance) · [🧩 技术方案](#technology) · [🛠️ 开发者](#developers)
+[🌟 核心能力](#features) · [🎬 实机演示](#demo) · [🚀 快速开始](#quick-start) · [📰 最新动态](#news) · [⚡ 性能表现](#performance) · [🧩 技术方案](#technology)
 
 </div>
 
@@ -159,74 +159,6 @@ LuxiInfer 将专家存储、缓存管理与 NPU 计算结合起来，保留每�
 3. **Prefill 权重复用。** 采用按层优先（layer-major）调度，同一层连续处理多个 AR128 输入块，并按专家归并 token，减少重复读取、提高矩阵计算利用率。
 4. **Decode 读算交叠。** 优先计算命中专家，同时异步读取缺失专家；结合就绪调度与双缓冲，交叠权重搬运和当前计算，减少等待。
 5. **跨阶段资源共享。** 融合 Attention 与 Router / Shared，Prefill / Decode 共享常量和常驻 context，并复用专家缓存，减少重复加载与复制。
-
-<a id="developers"></a>
-
-## 🛠️ 开发者
-
-LuxiInfer 基于 ExecuTorch 与高通 AI 技术栈构建，配套 MoE 工程涵盖量化、模型导出及设备推理。**GDN 核心源码不在开放范围内**，构建和运行需要与目标平台匹配的配套组件。
-
-### MoE 工程入口
-
-以下目录介绍配套工程的组织方式，路径相对于 ExecuTorch 源码根目录。部署和集成交流可通过文末联系方式与我们联系。
-
-```text
-examples/qualcomm/oss_scripts/moe/qwen35-35B-A3B/
-├── CONFIGURATION.md       # 环境、配置、导出与部署
-├── export.py              # 统一导出入口
-├── run_chat.py            # 设备推理与 Python 调用
-├── build.sh               # runner / Native 组件构建
-├── configs/               # 模型、量化与导出配置
-├── quantization/          # GPTQ 与专家量化
-├── export/                # QNN 图编译与组件导出
-├── workflow/              # 导出编排、模型打包与部署
-├── runner/                # 会话、专家缓存与异步 I/O
-└── native/                # Hexagon HVX / HMX 专家内核
-
-```
-
-工程目录沿用 `qwen35-35B-A3B` 命名，适配模型为 Qwen3.6-35B-A3B。配套工程中的 `CONFIGURATION.md` 介绍环境准备、基础库构建、导出与部署。
-
-### 配套工程的导出与推理
-
-以下命令用于说明配套工程的工作流程，**需要先取得匹配的工程源码、模型权重、GDN 算子包和平台运行库，不能直接在本仓库执行**。运行前请依照配套工程文档准备 Python / CUDA、QNN SDK、Hexagon SDK / Tools、Android NDK、ADB 和目标设备，并先构建 ExecuTorch / QNN 基础库。
-
-导出配置中的 checkpoint、校准数据、SDK、QNN binding、设备运行库、构建与输出路径均需按实际环境修改。以下命令从 ExecuTorch 源码根目录执行；`YOUR_SOC_MODEL`、`YOUR_ADB_SERIAL` 和设备运行库目录应替换为实际值：
-
-```bash
-export MOE_ROOT="$PWD/examples/qualcomm/oss_scripts/moe/qwen35-35B-A3B"
-export MOE_CONFIG="$MOE_ROOT/configs/export_sm8975.json"
-export MOE_DEVICE="YOUR_ADB_SERIAL"
-export MOE_SOC="YOUR_SOC_MODEL"
-export MOE_OUT="$PWD/llama-output/luxiinfer-moe/pte"
-export MOE_BUILD="$PWD/llama-output/luxiinfer-moe/build"
-export MOE_RUNTIME="YOUR_DEVICE_RUNTIME_DIR"
-
-python "$MOE_ROOT/export.py" --config "$MOE_CONFIG" --soc-model "$MOE_SOC" --print-plan
-python "$MOE_ROOT/export.py" --config "$MOE_CONFIG" --soc-model "$MOE_SOC" --check
-python "$MOE_ROOT/export.py" \
-  --config "$MOE_CONFIG" --output "$MOE_OUT" \
-  --soc-model "$MOE_SOC" --device "$MOE_DEVICE"
-```
-
-配置文件名沿用工程现有命名，命令行的 `--soc-model` 只指定目标平台，**不会自动替换配置中的 SDK、构建目录和设备运行库**。上述示例要求将配置里的 `build_dir` 设为 `$MOE_BUILD` 所指目录；同时需确保模型图、Native 内核、GDN 算子包和设备运行库与目标平台匹配。`--check` 用于检查导出输入，不能替代实际设备验证。
-
-配置驱动的导出流程串联 GPTQ、QNN 编译、共享权重分离与 PTE 打包。完整文本 PTE 导出需要连接目标设备；最终模型交付文件为 `model.pte`，运行程序与平台依赖需要单独部署。
-
-```bash
-python "$MOE_ROOT/run_chat.py" \
-  --weights-path "$MOE_OUT/model.pte" \
-  --build-dir "$MOE_BUILD" \
-  --device "$MOE_DEVICE" --soc-model "$MOE_SOC" \
-  --runtime-device-dir "$MOE_RUNTIME" \
-  --temperature 0 --max-new-tokens 128 \
-  --no-enable-thinking --interactive --stream \
-  --prompt "你好，请用中文介绍一下自己。"
-```
-
-图文推理使用 `--image-path`，Android 集成使用 `Qwen35MoeModule`。配套工程文档中，高通 Snapdragon 8 elite Gen 5 的专家内核已完成交叉编译验证，完整导出与设备运行流程仍需结合对应环境验证；上文性能实测不代表上述示例命令已完成端到端复现验证。
-
-复现上文 MoE 测试时，总上下文需配置为 2048，并导出匹配的模型图；工程默认值为 1152。上下文包含模板、文本、图片与输出，修改运行时参数不会扩大已有图的容量。
 
 <a id="contact"></a>
 
