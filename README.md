@@ -56,12 +56,13 @@ LuxiInfer 是陆兮科技面向高通移动平台的 **Android 本地 AI 应用*
 
 ### 1. 设备与模型
 
-以下为已验证的模型与芯片平台组合：
+目前开放下载以下两款模型，下载前请预留相应的手机存储空间：
 
-| 模型 | 参数规模 | 已验证芯片平台 | 支持能力 |
-| :--- | :--- | :--- | :--- |
-| Qwen3.5-0.8B / 2B | 0.8B / 2B | 高通 Snapdragon 8 elite<br>高通 Snapdragon 8 elite Gen 5 | 手机本地文本与图文推理 |
-| Qwen3.6-35B-A3B | 35B 总参数 / 约 3B 激活参数 | 高通 Snapdragon 8 elite Gen 5 | 手机本地文本与图文推理 |
+| 模型 | 参数规模 | 已验证芯片平台 | 支持能力 | 所需存储空间 |
+| :--- | :--- | :--- | :--- | :---: |
+| Qwen3.5-2B | 2B | 高通 Snapdragon 8 elite<br>高通 Snapdragon 8 elite Gen 5 | 手机本地文本与图文推理 | 约 1.8 G |
+| Qwen3.6-35B-A3B | 35B 总参数 / 约 3B 激活参数 | 高通 Snapdragon 8 elite Gen 5 | 手机本地文本与图文推理 | 约 10.6 G |
+
 
 <a id="download"></a>
 
@@ -82,7 +83,7 @@ LuxiInfer 是陆兮科技面向高通移动平台的 **Android 本地 AI 应用*
 
 ## 📰 最新动态
 
-- 📌 **小模型 GDN 加速：** Qwen3.5-0.8B / 2B 在高通 NPU 上实现高性能推理，Prefill 最高达到高通官方方案的 **2.17 倍**，Decode 最高达到 **2.35 倍**。[查看性能对比](#small-model-performance)
+- 📌 **小模型加速：** Qwen3.5-0.8B / 2B 在高通 NPU 上实现高性能推理，Prefill 最高达到高通官方方案的 **2.17 倍**，Decode 最高达到 **2.35 倍**。[查看性能对比](#small-model-performance)
 - 📌 **35B MoE 手机部署：** Qwen3.6-35B-A3B 实现手机本地文本与图文推理。[查看实测结果](#moe-performance)
 
 <a id="performance"></a>
@@ -140,13 +141,12 @@ LuxiInfer 基于高通原生 AI 加速技术栈，以 **ExecuTorch 为推理执�
 
 Gated DeltaNet（GDN）是混合注意力模型中的关键计算模块，通过门控与递推状态更新处理序列信息。它的执行效率直接影响模型的输入处理与连续生成速度，也是 LuxiInfer 从小模型扩展到 MoE 大模型的计算基础。
 
-面向 Qwen3.5-0.8B / 2B，LuxiInfer 自研了适配 Hexagon NPU 的 **GDN 高性能融合算子**，围绕三个方向优化：
+LuxiInfer 自研了适配 Hexagon NPU 的 **GDN 高性能融合算子**，围绕三个方向优化：
 
 - 🧩 **融合计算：** 将关键递推计算与状态更新统一执行，减少算子拆分和中间张量搬运。
 - ♻️ **复用状态：** 复用中间结果与工作状态，降低重复计算和内存读写开销。
 - ⚡ **原生加速：** 结合 Hexagon 向量化与并行执行能力，提高 Prefill 和 Decode 的执行效率。
 
-这套 GDN 执行能力同时用于后续 Qwen3.6 MoE 的混合注意力计算。
 
 ### MoE：协同优化计算、存储与调度
 
