@@ -103,7 +103,7 @@ LuxiInfer 是陆兮科技面向高通移动平台的 **Android 本地 AI 应用*
 
 ![Qwen3.5-0.8B / 2B 在高通 Snapdragon 8 elite 与高通 Snapdragon 8 elite Gen 5 平台上的 4K 上下文 NPU 推理性能对比：Prefill 最高 2.17 倍，Decode 最高 2.35 倍](<assets/LuxiInfer_Qwen3.5_倍数与模型字号精简_4K.png>)
 
-对比高通官方方案，**Prefill 速度最高达到 2.17 倍（提升 116.70%）**，对应 **高通 Snapdragon 8 elite** 平台上 2B 模型的 **1285.22 tokens/s**；**Decode 速度最高达到 2.35 倍（提升 135.20%）**，对应 **高通 Snapdragon 8 elite Gen 5** 平台上的 0.8B 模型，该平台 2B 模型的 Decode 也达到 **2.09 倍**。上述结果体现 GDN 算子与整模执行路径的协同优化效果。
+对比高通官方方案，**Prefill 速度最高达到 2.17 倍（提升 116.70%）**；**Decode 速度最高达到 2.35 倍（提升 135.20%）**。上述结果体现 GDN 算子与整模执行路径的协同优化效果。
 
 ***高通官方数据来源：** Qualcomm AI Hub，[Qwen3.5-0.8B 官方性能数据](https://github.com/qualcomm/ai-hub-models/blob/v0.65.0/src/qai_hub_models/models/qwen3_5_0_8b/perf.yaml)、[Qwen3.5-2B 官方性能数据](https://github.com/qualcomm/ai-hub-models/blob/v0.65.0/src/qai_hub_models/models/qwen3_5_2b/perf.yaml)。设备、量化细节与软件版本存在差异，结果用于同档位参考对比；图中速度比按所展示数值计算并四舍五入，提升百分比沿用测试汇总记录。*
 
