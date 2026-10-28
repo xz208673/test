@@ -104,18 +104,7 @@ LuxiInfer 是陆兮科技面向高通移动平台的 **Android 本地 AI 应用*
 
 对比高通官方方案，**Prefill 速度最高达到 2.17 倍（提升 116.70%）**，对应 **高通 Snapdragon 8 elite** 平台上 2B 模型的 **1285.22 tokens/s**；**Decode 速度最高达到 2.35 倍（提升 135.20%）**，对应 **高通 Snapdragon 8 elite Gen 5** 平台上的 0.8B 模型，该平台 2B 模型的 Decode 也达到 **2.09 倍**。上述结果体现 GDN 算子与整模执行路径的协同优化效果。
 
-#### 📋 测试条件与高通官方数据来源
-
-| 测试项目 | 陆兮科技 LuxiInfer | 高通官方 |
-| :--- | :--- | :--- |
-| 权重量化 | Q4 | Q4_0 GGUF |
-| 执行后端 | NPU | NPU |
-| 推理框架 | ExecuTorch | GenieX-llama.cpp |
-| 上下文 / 输入档位 | 4K 档位，实际输入约 4K | `context_length=4096` |
-
-设备、量化细节与软件版本等条件存在差异，上述数据用于 4K 档位参考对比。
-
-**高通官方数据来源：** Qualcomm AI Hub，[Qwen3.5-0.8B 官方性能数据](https://github.com/qualcomm/ai-hub-models/blob/v0.65.0/src/qai_hub_models/models/qwen3_5_0_8b/perf.yaml)、[Qwen3.5-2B 官方性能数据](https://github.com/qualcomm/ai-hub-models/blob/v0.65.0/src/qai_hub_models/models/qwen3_5_2b/perf.yaml)。图中速度比按所展示数值计算并四舍五入，提升百分比沿用测试汇总记录。
+**高通官方数据来源：** Qualcomm AI Hub，[Qwen3.5-0.8B 官方性能数据](https://github.com/qualcomm/ai-hub-models/blob/v0.65.0/src/qai_hub_models/models/qwen3_5_0_8b/perf.yaml)、[Qwen3.5-2B 官方性能数据](https://github.com/qualcomm/ai-hub-models/blob/v0.65.0/src/qai_hub_models/models/qwen3_5_2b/perf.yaml)。设备、量化细节与软件版本存在差异，结果用于同档位参考对比；图中速度比按所展示数值计算并四舍五入，提升百分比沿用测试汇总记录。
 
 <a id="moe-performance"></a>
 
@@ -157,7 +146,7 @@ Gated DeltaNet（GDN）是混合注意力模型中的关键计算模块，通过
 - ♻️ **复用状态：** 复用中间结果与工作状态，降低重复计算和内存读写开销。
 - ⚡ **原生加速：** 结合 Hexagon 向量化与并行执行能力，提高 Prefill 和 Decode 的执行效率。
 
-这套 GDN 执行能力同时用于后续 Qwen3.6 MoE 的混合注意力计算。GDN 部分公开方案概要与性能结果，核心源码不在开放范围内。
+这套 GDN 执行能力同时用于后续 Qwen3.6 MoE 的混合注意力计算。
 
 ### MoE：协同优化计算、存储与调度
 
@@ -175,11 +164,11 @@ LuxiInfer 将专家存储、缓存管理与 NPU 计算结合起来，保留每�
 
 ## 🛠️ 开发者
 
-LuxiInfer 基于 ExecuTorch 与高通 AI 技术栈构建，工程提供量化、导出、设备推理与 Android JNI 集成入口。GDN 核心源码不在开放范围内，工程构建需要配套组件。
+LuxiInfer 基于 ExecuTorch 与高通 AI 技术栈构建，配套 MoE 工程涵盖量化、模型导出、设备推理和 Android JNI 集成。**GDN 核心源码不在开放范围内**，构建和运行需要与目标平台匹配的配套组件。
 
-### MoE 工程入口与部署流程
+### MoE 工程入口
 
-以下路径相对于 ExecuTorch 源码根目录。完整环境与操作说明见 `examples/qualcomm/oss_scripts/moe/qwen35-35B-A3B/CONFIGURATION.md`。
+以下目录介绍配套工程的组织方式，路径相对于 ExecuTorch 源码根目录。**本仓库提供项目介绍和展示素材，不包含下列工程源码及构建依赖**；部署和集成交流可通过文末联系方式与我们联系。
 
 ```text
 examples/qualcomm/oss_scripts/moe/qwen35-35B-A3B/
@@ -187,7 +176,7 @@ examples/qualcomm/oss_scripts/moe/qwen35-35B-A3B/
 ├── export.py              # 统一导出入口
 ├── run_chat.py            # 设备推理与 Python 调用
 ├── build.sh               # runner / Native 组件构建
-├── configs/               # 量化、容量与调度配置
+├── configs/               # 模型、量化与导出配置
 ├── quantization/          # GPTQ 与专家量化
 ├── export/                # QNN 图编译与组件导出
 ├── workflow/              # 导出编排、模型打包与部署
@@ -197,39 +186,46 @@ examples/qualcomm/oss_scripts/moe/qwen35-35B-A3B/
 extension/android/jni/moe/ # Android JNI 集成
 ```
 
-工程目录沿用 `qwen35-35B-A3B`，适配模型为 Qwen3.6-35B-A3B。先按配置文档准备 Python / CUDA、QNN、Hexagon、Android NDK 与设备运行库，并完成 ExecuTorch / QNN 基础库构建。导出配置需要设置实际 checkpoint、校准数据、SDK、设备及构建路径。
+工程目录沿用 `qwen35-35B-A3B` 命名，适配模型为 Qwen3.6-35B-A3B。配套工程中的 `CONFIGURATION.md` 介绍环境准备、基础库构建、导出与部署；Android JNI 的接口和集成要求见配套工程中的 `extension/android/jni/moe/README.md`。
+
+### 配套工程的导出与推理
+
+以下命令用于说明配套工程的工作流程，**需要先取得匹配的工程源码、模型权重、GDN 算子包和平台运行库，不能直接在本仓库执行**。运行前请依照配套工程文档准备 Python / CUDA、QNN SDK、Hexagon SDK / Tools、Android NDK、ADB 和目标设备，并先构建 ExecuTorch / QNN 基础库。
+
+导出配置中的 checkpoint、校准数据、SDK、QNN binding、设备运行库、构建与输出路径均需按实际环境修改。以下命令从 ExecuTorch 源码根目录执行；`YOUR_SOC_MODEL`、`YOUR_ADB_SERIAL` 和设备运行库目录应替换为实际值：
 
 ```bash
 export MOE_ROOT="$PWD/examples/qualcomm/oss_scripts/moe/qwen35-35B-A3B"
 export MOE_CONFIG="$MOE_ROOT/configs/export_sm8975.json"
 export MOE_DEVICE="YOUR_ADB_SERIAL"
+export MOE_SOC="YOUR_SOC_MODEL"
 export MOE_OUT="$PWD/llama-output/luxiinfer-moe/pte"
+export MOE_BUILD="$PWD/llama-output/luxiinfer-moe/build"
+export MOE_RUNTIME="YOUR_DEVICE_RUNTIME_DIR"
 
-python "$MOE_ROOT/export.py" --config "$MOE_CONFIG" --soc-model SM8850 --print-plan
-python "$MOE_ROOT/export.py" --config "$MOE_CONFIG" --soc-model SM8850 --check
+python "$MOE_ROOT/export.py" --config "$MOE_CONFIG" --soc-model "$MOE_SOC" --print-plan
+python "$MOE_ROOT/export.py" --config "$MOE_CONFIG" --soc-model "$MOE_SOC" --check
 python "$MOE_ROOT/export.py" \
   --config "$MOE_CONFIG" --output "$MOE_OUT" \
-  --soc-model SM8850 --device "$MOE_DEVICE"
+  --soc-model "$MOE_SOC" --device "$MOE_DEVICE"
 ```
 
-配置文件名 `export_sm8975.json` 沿用工程现有命名；上例通过 `--soc-model` 指定高通 Snapdragon 8 elite Gen 5，构建产物与设备运行库需匹配 Hexagon v81。
+配置文件名沿用工程现有命名，命令行的 `--soc-model` 只指定目标平台，**不会自动替换配置中的 SDK、构建目录和设备运行库**。上述示例要求将配置里的 `build_dir` 设为 `$MOE_BUILD` 所指目录；同时需确保模型图、Native 内核、GDN 算子包和设备运行库与目标平台匹配。`--check` 用于检查导出输入，不能替代实际设备验证。
 
-配置驱动的入口串起 GPTQ、QNN 编译、共享权重分离与 PTE 打包。完整文本 PTE 导出需连接目标设备。最终模型交付文件为 `model.pte`，运行环境与平台库单独部署。
-
-以下示例约定导出配置的 `build_dir` 为 `llama-output/luxiinfer-moe/build`，设备 QNN 库位于 `/data/local/tmp/qwen35-runtime-v81`：
+配置驱动的导出流程串联 GPTQ、QNN 编译、共享权重分离与 PTE 打包。完整文本 PTE 导出需要连接目标设备；最终模型交付文件为 `model.pte`，运行程序与平台依赖需要单独部署。
 
 ```bash
 python "$MOE_ROOT/run_chat.py" \
   --weights-path "$MOE_OUT/model.pte" \
-  --build-dir "$PWD/llama-output/luxiinfer-moe/build" \
-  --device "$MOE_DEVICE" --soc-model SM8850 \
-  --runtime-device-dir /data/local/tmp/qwen35-runtime-v81 \
+  --build-dir "$MOE_BUILD" \
+  --device "$MOE_DEVICE" --soc-model "$MOE_SOC" \
+  --runtime-device-dir "$MOE_RUNTIME" \
   --temperature 0 --max-new-tokens 128 \
   --no-enable-thinking --interactive --stream \
   --prompt "你好，请用中文介绍一下自己。"
 ```
 
-图文推理使用 `--image-path`，Android 集成使用 `Qwen35MoeModule`。配置字段、工具链版本、JNI 打包与排错步骤分别见工程内的 `CONFIGURATION.md` 和 `extension/android/jni/moe/README.md`。
+图文推理使用 `--image-path`，Android 集成使用 `Qwen35MoeModule`。配套工程文档中，高通 Snapdragon 8 elite Gen 5 的专家内核已完成交叉编译验证，完整导出与设备运行流程仍需结合对应环境验证；上文性能实测不代表上述示例命令已完成端到端复现验证。
 
 复现上文 MoE 测试时，总上下文需配置为 2048，并导出匹配的模型图；工程默认值为 1152。上下文包含模板、文本、图片与输出，修改运行时参数不会扩大已有图的容量。
 
