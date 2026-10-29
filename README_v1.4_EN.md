@@ -2,21 +2,19 @@
 
 <div align="center">
 
-[简体中文](README.md) | **English**
-
 **Efficient on-device inference for Dense and MoE models, overcoming mobile compute and storage bottlenecks with custom core operators, ultra-low-bit quantization, and dynamic expert scheduling.**
 
 ![Android](https://img.shields.io/badge/Platform-Android-green.svg) ![ExecuTorch](https://img.shields.io/badge/Runtime-ExecuTorch-blue.svg) ![Hexagon NPU](https://img.shields.io/badge/Backend-Hexagon%20NPU-blue.svg)
 
 [🎬 Live Demos](#demo) · [🚀 Quick Start](#quick-start) · [📰 News](#news) · [⚡ Performance](#performance) · [🧩 Technology](#technology)
 
+[简体中文](README.md) | **English**
+
 </div>
 
 <a id="features"></a>
 
-**LuxiInfer** is an on-device AI application and inference solution developed by LuxiTech for Qualcomm mobile platforms. It runs models of different architectures and sizes on phones, supporting text conversations and image understanding.
-
-To address the growing diversity and size of models, LuxiInfer builds on **ExecuTorch and Qualcomm's native AI stack**. It brings together model adaptation, operator acceleration, low-bit quantization, storage management, and runtime scheduling into a complete, high-performance on-device inference solution.
+**LuxiInfer** is LuxiTech’s high-performance mobile deployment and inference solution for large hybrid-attention models, covering Dense and MoE architectures. To address the growing diversity and scale of model architectures, LuxiInfer builds on **ExecuTorch and Qualcomm's native AI stack**, bringing together model adaptation, operator acceleration, low-bit quantization, storage management, and runtime scheduling. It provides Qualcomm NPU inference on phones through a unified Android app. The initial supported models are from the Qwen series, with support continuing to expand.
 
 - 📱 **One-tap download and offline inference:** Enjoy an out-of-the-box app experience. Select and download a model in the app to start text conversations and image-based interactions. Once the model is downloaded, inference runs entirely on the phone without an internet connection, protecting data privacy.
 - ⚡ **Custom low-level operators make the most of the NPU:** For the Qualcomm Hexagon NPU, LuxiInfer combines a **custom fused GDN operator**, HVX vectorization, and model execution optimizations to address frequent scheduling and high memory-access overhead in hybrid-attention models running on general-purpose frameworks, significantly improving computational efficiency.
@@ -89,8 +87,8 @@ An internet connection is required to download a model. Once downloaded, the mod
 ## 📰 News
 
 - 📱 **[2026-10-30]** **LuxiInfer-Android v1.0** released, with one-tap model downloads and on-device NPU inference. Qwen3.5-2B and Qwen3.6-35B-A3B packages are currently available.
-- 🚀 **[2026-10-23]** Completed deployment of **Qwen3.6-35B-A3B MoE** on a phone, reaching **516.661 tokens/s** for text-only prefill and **17.262 tokens/s** for multimodal decode.
-- ⚡ **[2026-10-20]** Completed acceleration of the **Qwen3.5-2B Dense** model. Measured with a 4K context, prefill reaches **1441.75 tokens/s** and decode reaches **50.95 tokens/s**.
+- 🚀 **[2026-10-23]** Deployed a **35B-A3B MoE** model on a phone. In tests, **Qwen3.6-35B-A3B MoE** reached **516.661 tokens/s** for text-only prefill and **17.262 tokens/s** for multimodal decode.
+- ⚡ **[2026-10-20]** Completed **Dense** model acceleration. In tests with a 4K context, **Qwen3.5-2B** reached **1441.75 tokens/s** for prefill and **50.95 tokens/s** for decode.
 
 <a id="performance"></a>
 
@@ -164,13 +162,13 @@ LuxiInfer has developed a **high-performance fused GDN operator** for the Hexago
 
 With GDN operator acceleration in place, Qwen3.6-35B-A3B presents another deployment challenge: although only some experts are activated at a time, the full set of weights must still be stored on the device. As model size grows, **resident memory, expert reads, and loading delays** become important factors in mobile inference.
 
-LuxiInfer combines expert storage, cache management, and NPU computation while retaining Top-8 routing across all 256 experts per layer. Five optimizations reduce memory and I/O overhead:
+For Qwen3.6-35B-A3B, LuxiInfer coordinates model storage, resource management, and NPU computation, with the following optimizations:
 
-- **2-bit expert quantization.** Expert weights use the four-value codebook `{-7, -2, 2, 7}` and are stored as 2-bit indices. At execution time, they are expanded to 4-bit in VTCM and used with A8 activations; HVX prepares the data and HMX performs matrix multiplication.
-- **On-demand loading and dynamic caching.** Each layer uses an LRU expert cache. Cached experts are reused directly, while missing experts are read from flash storage, allowing the full expert set to participate as needed while reducing resident memory requirements.
-- **Prefill weight reuse.** Layer-major scheduling processes multiple AR128 input blocks consecutively within the same layer and groups tokens by expert, reducing repeated reads and improving matrix-compute utilization.
-- **Overlapping reads and computation during decode.** Cached experts are computed first while missing experts are read asynchronously. Ready-based scheduling and double buffering overlap weight transfers with ongoing computation to reduce waiting.
-- **Resource sharing across stages.** Attention, router, and shared-expert operations are fused; prefill and decode share constants and resident contexts and reuse the expert cache, reducing repeated loading and copying.
+- **2-bit expert quantization:** Compress expert weights to reduce model storage and weight transfer overhead.
+- **On-demand loading and dynamic caching:** Load and reuse expert weights as needed to reduce resident memory use and repeated reads.
+- **Prefill weight reuse:** Reuse expert weights during prefill to reduce repeated loading and improve prefill efficiency.
+- **Decode read-compute overlap:** Coordinate weight reads with model computation to reduce loading delays and improve decode efficiency.
+- **Resource sharing across stages:** Reuse runtime resources across Prefill and Decode to reduce repeated loading and resource overhead.
 
 <a id="contact"></a>
 

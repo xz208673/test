@@ -2,21 +2,19 @@
 
 <div align="center">
 
-**简体中文** | [English](README_v1.4_EN.md)
-
 **面向 Dense 与 MoE 模型的高效端侧推理，以自研核心算子、超低比特量化和动态专家调度，突破移动端计算与存储瓶颈。**
 
 ![Android](https://img.shields.io/badge/Platform-Android-green.svg) ![ExecuTorch](https://img.shields.io/badge/Runtime-ExecuTorch-blue.svg) ![Hexagon NPU](https://img.shields.io/badge/Backend-Hexagon%20NPU-blue.svg)
 
 [🎬 实机演示](#demo) · [🚀 快速开始](#quick-start) · [📰 最新动态](#news) · [⚡ 性能表现](#performance) · [🧩 技术方案](#technology)
 
+**简体中文** | [English](README_v1.4_EN.md)
+
 </div>
 
 <a id="features"></a>
 
-**LuxiInfer** 是陆兮科技面向高通移动平台打造的本地 AI 应用与端侧推理方案，支持不同架构和规模的模型在手机上运行，提供文本对话与图文理解。
-
-面对模型架构日益多样、参数规模不断增长带来的挑战，LuxiInfer 基于 **ExecuTorch 与高通原生 AI 技术栈**，贯通模型适配、算子加速、低比特量化、存储管理与运行时调度，形成一套完整的端侧高性能推理方案。
+**LuxiInfer** 是陆兮科技面向混合注意力大模型打造的手机端高性能部署与推理方案，覆盖 Dense 与 MoE 架构。面对模型架构日益多样、参数规模不断增长带来的挑战，LuxiInfer 基于 **ExecuTorch 与高通原生 AI 技术栈**，贯通模型适配、算子加速、低比特量化、存储管理与运行时调度，通过统一的 Android App 提供高通 NPU 端侧推理体验。首批适配 Qwen 系列模型，并持续扩展。
 
 - 📱 **一键下载，本地离线运行**：提供开箱即用的 App 体验。在 App 中选择并下载模型后即可开始文本对话与图文交互。模型下载完成后，全流程支持手机本地离线推理，保障数据隐私。
 - ⚡ **底层算子自研，高效释放 NPU 算力**：面向高通 Hexagon NPU，结合**自研 GDN 融合算子**、HVX 向量化与模型执行优化，解决混合注意力模型在通用框架下调度频繁、访存开销大的问题，显著提升计算效率。
@@ -90,8 +88,8 @@ LuxiInfer 将持续扩展对不同模型架构的适配，推进更通用的端�
 ## 📰 最新动态
 
 - 📱 **[2026-10-30]** **LuxiInfer-Android v1.0** 发布，支持模型一键下载与手机 NPU 本地推理。目前开放 Qwen3.5-2B 和 Qwen3.6-35B-A3B 套件。
-- 🚀 **[2026-10-23]** 完成 **Qwen3.6-35B-A3B MoE** 手机端部署，纯文本 Prefill 达到 **516.661 tokens/s**，图文 Decode 达到 **17.262 tokens/s**。
-- ⚡ **[2026-10-20]** 完成 **Qwen3.5-2B Dense** 模型加速。实测在 4K 上下文下，Prefill 达到 **1441.75 tokens/s**，Decode 达到 **50.95 tokens/s**。
+- 🚀 **[2026-10-23]** 完成 **35B-A3B MoE** 手机端部署，**Qwen3.6-35B-A3B MoE 实测**纯文本 Prefill 达到 **516.661 tokens/s**，图文 Decode 达到 **17.262 tokens/s**。
+- ⚡ **[2026-10-20]** 完成 **Dense** 模型加速。实测 **Qwen3.5-2B 在** 4K 上下文下，Prefill 达到 **1441.75 tokens/s**，Decode 达到 **50.95 tokens/s**。
 
 <a id="performance"></a>
 
@@ -167,13 +165,13 @@ LuxiInfer 自研了适配 Hexagon NPU 的 **GDN 高性能融合算子**，围绕
 
 在 GDN 算子加速的基础上，Qwen3.6-35B-A3B 带来了新的部署挑战：虽然每次只激活部分专家，但完整权重仍需存放在设备上。模型规模增大后，**常驻内存、专家读取与加载等待**成为影响手机端推理的重要因素。
 
-LuxiInfer 将专家存储、缓存管理与 NPU 计算结合起来，保留每层 256 个专家的真实 Top8 路由，通过五项优化降低内存与 I/O 开销：
+以 Qwen3.6-35B-A3B 为例，LuxiInfer 协同优化模型存储、资源管理与 NPU 计算，重点包括：
 
-- **2-bit 专家量化。** 专家权重采用 `{-7, -2, 2, 7}` 四值码本，以 2-bit 索引压缩存储；执行时在 VTCM 中展开为 4-bit，配合 A8 激活，由 HVX 准备数据、HMX 执行矩阵乘。
-- **按需加载与动态缓存。** 每层使用 LRU 专家缓存，命中时直接复用，缺失时从闪存读取，让完整专家集合按需参与计算，降低常驻内存需求。
-- **Prefill 权重复用。** 采用按层优先（layer-major）调度，同一层连续处理多个 AR128 输入块，并按专家归并 token，减少重复读取、提高矩阵计算利用率。
-- **Decode 读算交叠。** 优先计算命中专家，同时异步读取缺失专家；结合就绪调度与双缓冲，交叠权重搬运和当前计算，减少等待。
-- **跨阶段资源共享。** 融合 Attention 与 Router / Shared，Prefill / Decode 共享常量和常驻 context，并复用专家缓存，减少重复加载与复制。
+- **2-bit 专家量化：** 压缩专家权重，降低模型存储占用和权重传输开销。
+- **按需加载与动态缓存：** 根据运行需求加载和复用专家权重，降低常驻内存占用与重复读取开销。
+- **Prefill 权重复用：** 优化 Prefill 阶段的专家权重加载与复用，减少重复读取，提高计算效率。
+- **Decode 读算交叠：** 协同专家权重读取与模型计算，减少加载等待，提升 Decode 阶段的执行效率。
+- **跨阶段资源共享：** 复用 Prefill 与 Decode 阶段的运行资源，减少重复加载和资源开销。
 
 <a id="contact"></a>
 
