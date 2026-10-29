@@ -2,41 +2,45 @@
 
 <div align="center">
 
-**从 0.8B/2B 小模型高性能推理，到 35B MoE 大模型高效部署，以自研核心算子、超低比特量化和动态专家调度，突破移动端计算与存储瓶颈。**
+**面向 Dense 与 MoE 模型的高效端侧推理，以自研核心算子、超低比特量化和动态专家调度，突破移动端计算与存储瓶颈。**
 
-[🌟 核心能力](#features) · [🎬 实机演示](#demo) · [🚀 快速开始](#quick-start) · [📰 最新动态](#news) · [⚡ 性能表现](#performance) · [🧩 技术方案](#technology)
+![Android](https://img.shields.io/badge/Platform-Android-green.svg) ![ExecuTorch](https://img.shields.io/badge/Runtime-ExecuTorch-blue.svg) ![Hexagon NPU](https://img.shields.io/badge/Backend-Hexagon%20NPU-blue.svg)
+
+[🎬 实机演示](#demo) · [🚀 快速开始](#quick-start) · [📰 最新动态](#news) · [⚡ 性能表现](#performance) · [🧩 技术方案](#technology)
 
 </div>
 
 <a id="features"></a>
 
-## 🌟 核心能力
+**LuxiInfer** 是陆兮科技面向高通移动平台打造的本地 AI 应用与端侧推理方案，支持不同架构和规模的模型在手机上运行，提供文本对话与图文理解。
 
-LuxiInfer 是陆兮科技面向高通移动平台的 **Android 本地 AI 应用**，支持在手机上运行 Qwen 系列模型，进行文本与图文交互。
+面对模型架构日益多样、参数规模不断增长带来的挑战，LuxiInfer 基于 **ExecuTorch 与高通原生 AI 技术栈**，贯通模型适配、算子加速、低比特量化、存储管理与运行时调度，形成一套完整的端侧高性能推理方案。
 
-- 🚀 **小模型高速推理。** Qwen3.5-0.8B / 2B 在手机上实现高吞吐输入处理与流畅文本生成。
-- 🧠 **35B MoE 手机推理。** Qwen3.6-35B-A3B 在手机本地运行，支持文本与图文任务。
-- 💾 **低内存部署。** 结合超低比特量化、专家按需加载与动态调度，降低模型运行时的内存占用。
-- ⚡ **高通 NPU 原生加速。** 基于 ExecuTorch 与 Qualcomm Hexagon NPU，自研 GDN 融合算子，加速小模型与 MoE 的混合注意力计算。
+- 📱 **一键下载，本地离线运行**：提供开箱即用的 App 体验。在 App 中选择并下载模型后即可开始文本对话与图文交互。模型下载完成后，全流程支持手机本地离线推理，保障数据隐私。
+- ⚡ **底层算子自研，高效释放 NPU 算力**：面向高通 Hexagon NPU，结合**自研 GDN 融合算子**、HVX 向量化与模型执行优化，解决混合注意力模型在通用框架下调度频繁、访存开销大的问题，显著提升计算效率。
+- 💾 **计算与存储协同，降低资源开销**：根据模型特点，结合低比特量化、动态缓存和异步加载等技术，优化权重存储、内存占用与运行时调度，让大参数模型也能适应手机端资源。
+- 🧠 **一套方案，覆盖多种模型架构**：同一套端侧推理方案覆盖 Dense 与 MoE 架构。让用户既能体验 2B 模型的极速响应，也能在手机上跑通 35B 大模型进行复杂的文本问答与图文理解。
+
+LuxiInfer 将持续扩展对不同模型架构的适配，推进更通用的端侧算子、量化与运行时解决方案，为未来的混合架构模型和本地智能应用提供支持。
 
 <a id="demo"></a>
 
 ## 🎬 实机演示
 
-从 0.8B / 2B 小模型到 35B MoE，展示手机上的真实输入处理、流式生成与图文问答。
+以 Qwen3.5-2B 和 Qwen3.6-35B-A3B 为代表，展示 Dense 与 MoE 模型在手机上的输入处理、流式生成与图文问答。
 
 <table>
   <tr>
     <td width="50%" align="center">
-      <!-- DEMO_SMALL_MODEL_URL：替换为小模型实机视频地址。 -->
-      <a href="DEMO_SMALL_MODEL_URL"><img src="assets/demo-small-model.svg" width="100%" alt="观看 Qwen3.5-0.8B / 2B 小模型实机演示" /></a>
-      <br /><b>0.8B / 2B：输入处理与连续生成</b>
+      <!-- DEMO_SMALL_MODEL_URL：替换为 Dense 模型实机视频地址。 -->
+      <a href="DEMO_SMALL_MODEL_URL"><img src="assets/demo-small-model.svg" width="100%" alt="观看 Qwen3.5-2B Dense 模型实机演示" /></a>
+      <br /><b>Dense · Qwen3.5-2B：输入处理与连续生成</b>
       <p>查看 GDN 加速下的长文本处理、流式回答与运行速度。</p>
     </td>
     <td width="50%" align="center">
       <!-- DEMO_MOE_URL：替换为 Qwen3.6-35B-A3B 实机视频地址。 -->
       <a href="DEMO_MOE_URL"><img src="assets/demo-moe-v1.2.svg" width="100%" alt="观看 Qwen3.6-35B-A3B MoE 实机演示" /></a>
-      <br /><b>35B MoE：手机本地大模型推理</b>
+      <br /><b>MoE · Qwen3.6-35B-A3B：手机本地大模型推理</b>
       <p>查看 Qwen3.6 的材料问答、图片理解与持续生成。</p>
     </td>
   </tr>
@@ -50,7 +54,7 @@ LuxiInfer 是陆兮科技面向高通移动平台的 **Android 本地 AI 应用*
 
 <a id="quick-start"></a>
 
-## 🚀 快速开始（Quick Start）
+## 🚀 快速开始
 
 <a id="supported"></a>
 
@@ -60,8 +64,8 @@ LuxiInfer 是陆兮科技面向高通移动平台的 **Android 本地 AI 应用*
 
 | 模型 | 参数规模 | 已验证芯片平台 | 支持能力 | 所需存储空间 |
 | :--- | :--- | :--- | :--- | :---: |
-| Qwen3.5-2B | 2B | 高通 Snapdragon 8 elite<br>高通 Snapdragon 8 elite Gen 5 | 手机本地文本与图文推理 | 约 1.8 G |
-| Qwen3.6-35B-A3B | 35B 总参数 / 约 3B 激活参数 | 高通 Snapdragon 8 elite Gen 5 | 手机本地文本与图文推理 | 约 10.6 G |
+| Qwen3.5-2B（Dense） | 2B | 高通 Snapdragon 8 elite<br>高通 Snapdragon 8 elite Gen 5 | 手机本地文本与图文推理 | 约 1.8 G |
+| Qwen3.6-35B-A3B（MoE） | 35B 总参数 / 约 3B 激活参数 | 高通 Snapdragon 8 elite Gen 5 | 手机本地文本与图文推理 | 约 10.6 G |
 
 
 <a id="download"></a>
@@ -83,8 +87,9 @@ LuxiInfer 是陆兮科技面向高通移动平台的 **Android 本地 AI 应用*
 
 ## 📰 最新动态
 
-- 📌 **小模型加速：** Qwen3.5-0.8B / 2B 在高通 NPU 上实现高性能推理，Prefill 最高达到高通官方方案的 **2.17 倍**，Decode 最高达到 **2.35 倍**。[查看性能对比](#small-model-performance)
-- 📌 **35B MoE 手机部署：** Qwen3.6-35B-A3B 实现手机本地文本与图文推理。[查看实测结果](#moe-performance)
+- 📱 **[2026-10-30]** **LuxiInfer-Android v1.0** 发布，支持模型一键下载与手机 NPU 本地推理。目前开放 Qwen3.5-2B 和 Qwen3.6-35B-A3B 套件。
+- 🚀 **[2026-10-23]** 完成 **Qwen3.6-35B-A3B MoE** 手机端部署，纯文本 Prefill 达到 **516.661 tokens/s**，图文 Decode 达到 **17.262 tokens/s**。
+- ⚡ **[2026-10-20]** 完成 **Qwen3.5-2B Dense** 模型加速。实测在 4K 上下文下，Prefill 达到 **1441.75 tokens/s**，Decode 达到 **50.95 tokens/s**。
 
 <a id="performance"></a>
 
@@ -92,7 +97,7 @@ LuxiInfer 是陆兮科技面向高通移动平台的 **Android 本地 AI 应用*
 
 <a id="small-model-performance"></a>
 
-### 🚀 Qwen3.5-0.8B / 2B：4K 上下文推理加速
+### 🚀 Dense 模型实测：Qwen3.5-0.8B / 2B
 
 在 **4K 上下文**下，LuxiInfer 在 **高通 Snapdragon 8 elite Gen 5** 上实现：
 
@@ -109,7 +114,7 @@ LuxiInfer 是陆兮科技面向高通移动平台的 **Android 本地 AI 应用*
 
 <a id="moe-performance"></a>
 
-### 🧠 Qwen3.6-35B-A3B：手机端 MoE 推理
+### 🧠 MoE 模型实测：Qwen3.6-35B-A3B
 
 在**不使用前瞻专家调度与投机解码技术**的情况下，LuxiInfer 实现高性能的手机端 35B MoE 推理：
 
@@ -135,11 +140,11 @@ LuxiInfer 是陆兮科技面向高通移动平台的 **Android 本地 AI 应用*
 
 ## 🧩 技术方案
 
-LuxiInfer 基于高通原生 AI 加速技术栈，以 **ExecuTorch 为推理执行底座**。先优化混合注意力模型的核心计算，再扩展到 MoE 专家权重的存储与运行时调度，形成从小模型到大参数模型的协同优化方案。
+LuxiInfer 基于高通原生 AI 加速技术栈，以 **ExecuTorch 为推理执行底座**，面向 Dense 与 MoE 模型提供统一的端侧推理方案。通过优化混合注意力模型的核心计算，并结合 MoE 专家权重的存储与运行时调度，协同优化不同模型架构的计算与资源使用。
 
-### GDN：打好小模型与 MoE 的计算基础
+### GDN：混合注意力模型的计算基础
 
-Gated DeltaNet（GDN）是混合注意力模型中的关键计算模块，通过门控与递推状态更新处理序列信息。它的执行效率直接影响模型的输入处理与连续生成速度，也是 LuxiInfer 从小模型扩展到 MoE 大模型的计算基础。
+Gated DeltaNet（GDN）是混合注意力模型中的关键计算模块，通过门控与递推状态更新处理序列信息。它的执行效率直接影响模型的输入处理与连续生成速度，为采用该架构的 Dense 与 MoE 模型提供计算基础。
 
 LuxiInfer 自研了适配 Hexagon NPU 的 **GDN 高性能融合算子**，围绕三个方向优化：
 
