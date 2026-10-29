@@ -2,6 +2,8 @@
 
 <div align="center">
 
+**简体中文** | [English](README_v1.4_EN.md)
+
 **面向 Dense 与 MoE 模型的高效端侧推理，以自研核心算子、超低比特量化和动态专家调度，突破移动端计算与存储瓶颈。**
 
 ![Android](https://img.shields.io/badge/Platform-Android-green.svg) ![ExecuTorch](https://img.shields.io/badge/Runtime-ExecuTorch-blue.svg) ![Hexagon NPU](https://img.shields.io/badge/Backend-Hexagon%20NPU-blue.svg)

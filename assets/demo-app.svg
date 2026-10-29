@@ -10,7 +10,7 @@
 <circle cx="1060" cy="60" r="200" fill="#e2f2ed"/>
 <text x="48" y="56" font-size="13" font-weight="700" letter-spacing="2" fill="#3d8078">01 / APP WALKTHROUGH</text>
 <text x="48" y="126" font-size="40" font-weight="700" fill="#152e40">从模型下载，到本地对话。</text>
-<text x="50" y="170" font-size="20" fill="#577084">一个 App，连接小模型与 35B MoE。</text>
+<text x="50" y="170" font-size="20" fill="#577084">一个 App，连接 Dense 与 MoE 模型。</text>
 <rect x="50" y="222" width="125" height="44" rx="12" fill="#fff" stroke="#d7e3eb"/>
 <text x="112" y="250" text-anchor="middle" font-size="17" fill="#244656">选择模型</text>
 <path d="M 188 244 H 210 M 204 238 L 210 244 L 204 250" fill="none" stroke="#6d8c9c" stroke-width="2"/>
