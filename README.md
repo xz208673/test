@@ -123,8 +123,6 @@ LuxiInfer 将持续扩展对不同模型架构的适配，推进更通用的端�
 
 > 💾 **35B MoE，低内存部署：** Qwen3.6-35B-A3B 在一台配备 **12 GiB 运行内存**的 **高通 Snapdragon 8 elite Gen 5** 手机上本地运行，且峰值运行内存低至 **约 3.8 GiB**。
 
-**高通官方端侧 MoE 吞吐参考。** 高通在[官方公告](https://www.qualcomm.cn/news/releases/2026/09/releases-2026-09-22-2)中披露，StepEdge-Omni 30B-MoE 通过 NPU+GPU 双引擎协同，预填充吞吐超过 **330 tokens/s**。LuxiInfer 的 Qwen3.6-35B-A3B 在 Hexagon NPU 推理路径上达到 **516.661 tokens/s**；两者为不同模型与执行配置下的吞吐量级对照。
-
 #### 📊 1024 → 1024 token 实测
 
 **测试平台：高通 Snapdragon 8 elite Gen 5；总上下文：2048 token。** 以下展示同一配置下的纯文本与图文实测结果，输入与输出长度均为 1024 token。
@@ -135,6 +133,16 @@ LuxiInfer 将持续扩展对不同模型架构的适配，推进更通用的端�
 | 图文 | 1024 → 1024 | 370.344 | 17.262 |
 
 图文任务的首次响应还包含图片处理与视觉编码时间。
+
+**高通官方端侧 MoE 吞吐参考**
+
+| 方案 | 模型 | 芯片平台 | 执行后端 | Prefill（tokens/s） |
+| :---: | :---: | :---: | :---: | :---: |
+| **LuxiInfer** | Qwen3.6-35B-A3B | Snapdragon 8 elite Gen 5 | Hexagon NPU | **516.661** |
+| [**高通官方方案**](https://www.qualcomm.cn/news/releases/2026/09/releases-2026-09-22-2) | StepEdge-Omni 30B-MoE | Snapdragon 8 Elite Extreme Gen 6 | NPU + GPU | **> 330** |
+
+*LuxiInfer 数据来自纯文本 1024 → 1024 token 场景；两者芯片平台、模型与执行配置不同，数据仅用于吞吐量级参考。*
+
 
 <a id="technology"></a>
 
