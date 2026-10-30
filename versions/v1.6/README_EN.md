@@ -22,7 +22,7 @@
 
 **LuxiInfer** is LuxiTech’s high-performance on-device AI inference solution and application. Designed for large models of different architectures and scales, chip platforms, and device scenarios, it brings together model adaptation, operator optimization, low-bit quantization, storage management, and runtime scheduling, with the goal of running more models efficiently across a wider range of devices.
 
-The current phase focuses on Android phones, with initial adaptation and validation completed on Qualcomm mobile platforms. The Android app provides local inference, initially supporting Dense and MoE models from the Qwen series for text conversations and image understanding.
+The current phase focuses on Android phones, with initial adaptation and validation completed on Qualcomm mobile platforms. The Android app provides local inference, with initial support for Dense and MoE models from the Qwen series and LuxiTech’s own LuxiLLM models. These support text conversations, and selected models also support image understanding.
 
 - 📱 **One-tap download and offline inference:** Enjoy an out-of-the-box app experience. Select and download a model in the app to start text conversations and image-based interactions. Once the model is downloaded, inference runs entirely on the phone without an internet connection, protecting data privacy.
 - ⚡ **Custom low-level operators make the most of the NPU:** In the current phase, LuxiInfer targets the Qualcomm Hexagon NPU and uses **custom operators** to optimize computation and data movement. This addresses frequent scheduling and memory-access overhead in hybrid-attention models running on general-purpose frameworks, improving computational efficiency.
