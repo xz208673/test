@@ -24,7 +24,7 @@
 
 The current phase focuses on Android phones, with initial adaptation and validation completed on Qualcomm mobile platforms. The Android app provides local inference, with initial support for Dense and MoE models from the Qwen series and LuxiTech’s own LuxiLLM models. These support text conversations, and selected models also support image understanding.
 
-- 📱 **One-tap download and offline inference:** Enjoy an out-of-the-box app experience. Select and download a model in the app to start text conversations and image-based interactions. Once the model is downloaded, inference runs entirely on the phone without an internet connection, protecting data privacy.
+- 📱 **One-tap download and offline inference:** Enjoy an out-of-the-box app experience. Select and download a model in the app to start text conversations, or use a model that supports image understanding. Once the model is downloaded, inference runs entirely on the phone without an internet connection, protecting data privacy.
 - ⚡ **Custom low-level operators make the most of the NPU:** In the current phase, LuxiInfer targets the Qualcomm Hexagon NPU and uses **custom operators** to optimize computation and data movement. This addresses frequent scheduling and memory-access overhead in hybrid-attention models running on general-purpose frameworks, improving computational efficiency.
 - 💾 **Coordinated compute and storage reduce resource use:** Low-bit quantization, dynamic caching, and asynchronous loading are tailored to each model to optimize weight storage, memory usage, and runtime scheduling, making large models practical on phones.
 - 🧠 **One solution for multiple model architectures:** The same on-device inference solution supports both Dense and MoE architectures. Users can enjoy fast responses from a 2B model or run a 35B model on a phone for complex text and image-based tasks.
@@ -195,7 +195,7 @@ The diagram below uses hybrid-attention computation to illustrate one category o
 
 ### 2. MoE Architecture: Expert Computation and Resource Scheduling Optimization
 
-Beyond core computation optimization for hybrid attention, MoE models present additional deployment challenges: although only some experts are activated at a time, the full set of weights must still be stored on the device. As model size grows, **resident memory, expert reads, and loading delays** become important factors in mobile inference.
+For large-parameter MoE models, expert weight storage and scheduling present deployment challenges. Although only some experts are activated at a time, the full set of weights must still be stored on the device, making **resident memory, expert reads, and loading delays** important factors in mobile inference.
 
 Using Qwen3.6-35B-A3B as an example, LuxiInfer coordinates expert computation, model storage, and resource management through the following optimizations:
 
