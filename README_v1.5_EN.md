@@ -12,7 +12,7 @@
 
 ![Current platform: Android](https://img.shields.io/badge/Current-Android-3DDC84.svg) ![Models: Dense and MoE](https://img.shields.io/badge/Models-Dense%20%7C%20MoE-2563EB.svg) ![On-device inference](https://img.shields.io/badge/Inference-On--device-0D9488.svg)
 
-[🎬 Live Demos](#demo) · [🚀 Quick Start](#quick-start) · [📰 News](#news) · [⚡ Performance](#performance) · [🧩 Technology](#technology) · [📄 v1.6 Preview](versions/v1.6/README.md)
+[🎬 Live Demos](#demo) · [🚀 Quick Start](#quick-start) · [📰 News](#news) · [⚡ Performance](#performance) · [🧩 Technology](#technology)
 
 [简体中文](README.md) | **English**
 
@@ -101,7 +101,7 @@ The following four models are currently available for download. Make sure your p
       <td align="center">Approx. 1.8 G</td>
     </tr>
     <tr>
-      <td align="center">Qwen3.5-35B-A3B (MoE)</td>
+      <td align="center">Qwen3.6-35B-A3B (MoE)</td>
       <td align="center">35B total / approx. 3B active</td>
       <td align="center">On-device text and image inference</td>
       <td align="center">Approx. 10.9 G</td>
@@ -157,8 +157,8 @@ These results reflect the combined effect of model operator and full-model execu
 
 LuxiInfer delivers high-performance on-device inference for a 35B MoE model **without lookahead expert scheduling or speculative decoding**:
 
-- **Decode up to 17.262 tokens/s for text and image input.** Supports continuous on-device generation for text questions and image-based interactions.
-- **Prefill up to 516.661 tokens/s for text-only input.** Input processing throughput exceeds 500 tokens/s, speeding up long-input tasks.
+- **Decode up to 17.262 tokens/s.** Supports continuous on-device generation for text questions and image-based interactions.
+- **Prefill up to 516.661 tokens/s.** Input processing throughput exceeds 500 tokens/s, speeding up long-input tasks.
 
 > 💾 **35B MoE with low memory usage:** Qwen3.6-35B-A3B runs locally on a **Qualcomm Snapdragon 8 Elite Gen 5** phone with **12 GiB of RAM**, with peak runtime memory usage as low as **approximately 3.8 GiB**.
 
@@ -172,15 +172,6 @@ LuxiInfer delivers high-performance on-device inference for a 35B MoE model **wi
 | Text and image | 1024 → 1024 | 370.344 | 17.262 |
 
 *Time to first response for multimodal tasks also includes image processing and visual encoding.*
-
-#### 📰 Qualcomm's Official On-Device MoE Throughput Reference
-
-| Solution | Model | Chip platform | Execution backend | Prefill (tokens/s) |
-| :---: | :---: | :---: | :---: | :---: |
-| **LuxiInfer** | Qwen3.6-35B-A3B | Snapdragon 8 Elite Gen 5 | Hexagon NPU | **516.661** |
-| [**Qualcomm's official solution**](https://www.qualcomm.cn/news/releases/2026/09/releases-2026-09-22-2) | StepEdge-Omni 30B-MoE | Snapdragon 8 Elite Extreme Gen 6 | NPU + GPU | **> 330** |
-
-*LuxiInfer data is from a text-only 1024 → 1024 token test. The chip platforms, models, and execution configurations differ; the figures are provided only as a reference for throughput levels.*
 
 <a id="technology"></a>
 

@@ -14,7 +14,7 @@
 
 [🎬 实机演示](#demo) · [🚀 快速开始](#quick-start) · [📰 最新动态](#news) · [⚡ 性能表现](#performance) · [🧩 技术方案](#technology)
 
-**简体中文** | [English (v1.5)](../../README_v1.5_EN.md)
+**简体中文** | [English](README_EN.md)
 
 </div>
 

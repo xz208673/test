@@ -12,7 +12,7 @@
 
 ![当前平台：Android](https://img.shields.io/badge/Current-Android-3DDC84.svg) ![模型架构：Dense 与 MoE](https://img.shields.io/badge/Models-Dense%20%7C%20MoE-2563EB.svg) ![本地推理](https://img.shields.io/badge/Inference-On--device-0D9488.svg)
 
-[🎬 实机演示](#demo) · [🚀 快速开始](#quick-start) · [📰 最新动态](#news) · [⚡ 性能表现](#performance) · [🧩 技术方案](#technology) · [📄 v1.6 预览](versions/v1.6/README.md)
+[🎬 实机演示](#demo) · [🚀 快速开始](#quick-start) · [📰 最新动态](#news) · [⚡ 性能表现](#performance) · [🧩 技术方案](#technology)
 
 **简体中文** | [English](README_v1.5_EN.md)
 
