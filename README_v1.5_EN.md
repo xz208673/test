@@ -22,7 +22,7 @@
 
 **LuxiInfer** is LuxiTech’s high-performance on-device AI inference solution and application. Designed for large models of different architectures and scales, chip platforms, and device scenarios, it brings together model adaptation, operator optimization, low-bit quantization, storage management, and runtime scheduling, with the goal of running more models efficiently across a wider range of devices.
 
-The current phase focuses on Android phones, with initial adaptation and validation completed on Qualcomm mobile platforms. The Android app provides local inference, with initial support for Dense and MoE models from the Qwen series and LuxiTech’s own LuxiLLM models. These support text conversations, and selected models also support image understanding.
+The current phase focuses on Android phones, with initial adaptation and validation completed on Qualcomm mobile platforms. The Android app provides local inference and currently supports LuxiTech’s own LuxiLLM models, as well as Dense and MoE models from the Qwen series. These support text conversations, and selected models also support image understanding.
 
 - 📱 **One-tap download and offline inference:** Enjoy an out-of-the-box app experience. Select and download a model in the app to start text conversations, or use a model that supports image understanding. Once the model is downloaded, inference runs entirely on the phone without an internet connection, protecting data privacy.
 - ⚡ **Custom low-level operators make the most of the NPU:** In the current phase, LuxiInfer targets the Qualcomm Hexagon NPU and uses **custom operators** to optimize computation and data movement. This addresses frequent scheduling and memory-access overhead in hybrid-attention models running on general-purpose frameworks, improving computational efficiency.
@@ -135,6 +135,27 @@ An internet connection is required to download a model. Once downloaded, the mod
 <a id="performance"></a>
 
 ## ⚡ Performance
+
+### 🌟 In-House Model Benchmarks: LuxiLLM-1.7B
+
+On **Qualcomm Snapdragon 8 Elite Gen 5**, LuxiLLM-1.7B achieved the following NPU results: **Prefill:** **2617.54 tokens/s** with a 4K-token input; **Decode:** **44.66 tokens/s** with a 4K-token output; and **KV Cache:** **62.95 MiB** in the 4K test.
+
+The table below summarizes the measured results across the 1K–4K test settings:
+
+| Prefill input length | Prefill (tokens/s) | Decode output length | Decode (tokens/s) | KV Cache (MiB) |
+| :---: | :---: | :---: | :---: | :---: |
+| 1K | 2308.57 | 1K | 49.21 | 38.95 |
+| 2K | 2503.93 | 2K | 47.44 | 46.95 |
+| 3K | 2564.37 | 3K | 47.92 | 54.95 |
+| 4K | 2617.54 | 4K | 44.66 | 62.95 |
+
+#### 📊 Model Benchmark Results
+
+The chart compares LuxiLLM-1.7B and Qwen3-1.7B on four benchmarks: CMMLU (Chinese multi-task language understanding), GSM8K (grade-school math word problems), HellaSwag (commonsense reasoning), and ARC-Challenge (science question answering). **Higher scores are better.**
+
+![Comparison of LuxiLLM-1.7B and Qwen3-1.7B across four model benchmarks](assets/luxillm-qwen3-benchmark-v1.5-en-v2.png)
+
+LuxiLLM-1.7B scores higher on CMMLU, HellaSwag, and ARC-Challenge, while Qwen3-1.7B scores higher on GSM8K.
 
 <a id="small-model-performance"></a>
 

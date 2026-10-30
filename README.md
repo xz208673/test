@@ -137,6 +137,27 @@
 
 ## ⚡ 性能表现
 
+### 🌟 自研模型实测：LuxiLLM-1.7B
+
+在 **高通 Snapdragon 8 Elite Gen 5** 上，LuxiLLM-1.7B 的 NPU 实测 **Prefill：** 4K 输入时达到 **2617.54 tokens/s**；**Decode：** 4K 输出时达到 **44.66 tokens/s**；**KV Cache** 在 4K 档位仅占用 **62.95 MiB**。
+
+下表汇总 1K–4K 档位的实测结果：
+
+| Prefill 输入长度 | Prefill（tokens/s） | Decode 输出长度 | Decode（tokens/s） | KV Cache（MiB） |
+| :---: | :---: | :---: | :---: | :---: |
+| 1K | 2308.57 | 1K | 49.21 | 38.95 |
+| 2K | 2503.93 | 2K | 47.44 | 46.95 |
+| 3K | 2564.37 | 3K | 47.92 | 54.95 |
+| 4K | 2617.54 | 4K | 44.66 | 62.95 |
+
+#### 📊 模型能力评测
+
+下图展示 LuxiLLM-1.7B 与 Qwen3-1.7B 在四项基准测试中的得分，**数值越高越好**。测试包括 CMMLU（中文多任务语言理解）、GSM8K（小学数学应用题）、HellaSwag（常识推理）和 ARC-Challenge（科学问答挑战集）。
+
+![LuxiLLM-1.7B 与 Qwen3-1.7B 的四项模型能力评测对比](assets/luxillm-qwen3-benchmark-v1.5-v2.png)
+
+LuxiLLM-1.7B 在 CMMLU、HellaSwag 和 ARC-Challenge 三项测试中得分更高；Qwen3-1.7B 在 GSM8K 上得分更高。
+
 <a id="small-model-performance"></a>
 
 ### 🚀 Dense 模型实测：Qwen3.5-0.8B / 2B
